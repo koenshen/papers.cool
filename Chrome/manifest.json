@@ -1,6 +1,5 @@
 {
-"update_url": "https://clients2.google.com/service/update2/crx",
-
+    "update_url": "https://clients2.google.com/service/update2/crx",
     "manifest_version": 3,
     "name": "Cool Papers Redirector",
     "version": "0.2.0",
@@ -24,7 +23,8 @@
             "matches": [
                 "https://arxiv.org/*",
                 "https://openreview.net/*",
-                "https://aclanthology.org/*"
+                "https://aclanthology.org/*",
+				"https://papers.cool/arxiv/*"
             ],
             "js": ["content.js"]
         }

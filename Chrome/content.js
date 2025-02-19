@@ -34,6 +34,15 @@ if (url.startsWith('https://arxiv.org/')) {
     var paperId = url.match(/(?<=aclanthology.org\/)([A-Za-z0-9\-\.]+)(?=\/)/g)[0];
     var div = document.querySelector('div.acl-paper-link-block');
     div.innerHTML += `<a class="btn btn-secondary" href="https://papers.cool/venue/${paperId}@ACL" target="_blank"><span class="pl-sm-2 d-none d-sm-inline">Cool Papers</span></a>`;
+} else if (url.startsWith('https://papers.cool/arxiv/')) {
+	var a = document.createElement('a');
+	a.href = '';
+    a.style = 'display:inline;float:right';
+    a.onclick = function() {
+		var paperId = url.match(/[0-9]{4}\.[0-9]{4,5}/)[0];
+		window.open(`https://arxiv.org/pdf/${paperId}`, '_blank');
+    };
+	
 }
 
 

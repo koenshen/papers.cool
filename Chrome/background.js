@@ -6,7 +6,8 @@ chrome.contextMenus.create({
         "https://arxiv.org/abs/*",
         "https://arxiv.org/html/*",
         "https://huggingface.co/papers/*",
-        "https://openreview.net/forum*"
+        "https://openreview.net/forum*",
+		"https://papers.cool/arxiv/*"
     ]
 });
 
@@ -28,7 +29,9 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
     var textToCheck = [info.selectionText, info.linkUrl, info.pageUrl, info.frameUrl];
-    var arXivPattern = /[0-9]{4}\.[0-9]{4,5}/g;
+	var arxiv_number = /[0-9]{4}\.[0-9]{4,5}/g;
+    var arXivPattern = /arxiv\.org\/abs\/.*/;
+	var papersCoolPattern = /papers\.cool\/arxiv\/.*/;
     var OpenReviewPattern = /(?<=openreview\.net\/.*?id=)([A-Za-z0-9]+)/g;
     var IJCAIPattern = /(?<=ijcai\.org\/proceedings\/)(\d+)\/(\d+)/g;
     var ACLPattern = /(?<=aclanthology.org\/)([A-Za-z0-9\-\.]+)(?=(\/|\.pdf))/g;
@@ -37,7 +40,15 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
         if (text) {
             var paperIds = text.match(arXivPattern);
             if (paperIds) {
+				paperIds = paperIds[0].match(arxiv_number);
                 var newUrl = `https://papers.cool/arxiv/${paperIds.join(',')}`;
+                chrome.tabs.create({url: newUrl});
+                return;
+            }
+			var paperIds = text.match(papersCoolPattern);
+            if (paperIds) {
+				paperIds = paperIds[0].match(arxiv_number);
+                var newUrl = `https://arxiv.org/pdf/${paperIds.join(',')}`;
                 chrome.tabs.create({url: newUrl});
                 return;
             }
