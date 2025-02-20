@@ -1,5 +1,10 @@
 # Cool Papers
 
+
+## 2025.2.20 update
+Must change '.crx' to '.zip' after package the extension with chrome/edge to avoid extension breakdown. 
+
+
 Immersive Paper Discovery（沉浸式刷论文！）
 
 这里记录Cool Papers的更新日志，并且收集用户的反馈和建议。
