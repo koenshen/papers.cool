@@ -1,6 +1,12 @@
 chrome.contextMenus.create({
     id: "redirect1",
     title: "Redirect to Cool Papers",
+    contexts: ["selection", "link"]
+});
+
+chrome.contextMenus.create({
+    id: "redirect2",
+    title: "Redirect to Cool Papers",
     contexts: ["page"],
     documentUrlPatterns: [
         "https://arxiv.org/abs/*",
@@ -9,12 +15,6 @@ chrome.contextMenus.create({
         "https://openreview.net/forum*",
 		"https://papers.cool/arxiv/*"
     ]
-});
-
-chrome.contextMenus.create({
-    id: "redirect2",
-    title: "Redirect to Cool Papers",
-    contexts: ["selection", "link"]
 });
 
 chrome.contextMenus.create({
@@ -48,7 +48,7 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
 			var paperIds = text.match(papersCoolPattern);
             if (paperIds) {
 				paperIds = paperIds[0].match(arxiv_number);
-                var newUrl = `https://arxiv.org/pdf/${paperIds.join(',')}`;
+                var newUrl = `https://arxiv.org/abs/${paperIds.join(',')}`;
                 chrome.tabs.update(tab.id, {url: newUrl});
                 return;
             }
