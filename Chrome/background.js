@@ -30,7 +30,7 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
     var textToCheck = [info.selectionText, info.linkUrl, info.pageUrl, info.frameUrl];
 	var arxiv_number = /[0-9]{4}\.[0-9]{4,5}/g;
-    var arXivPattern = /arxiv\.org\/abs\/.*/;
+    var arXivPattern = /arxiv\.org\/(abs|pdf|html)\/.*/;
 	var papersCoolPattern = /papers\.cool\/arxiv\/.*/;
     var OpenReviewPattern = /(?<=openreview\.net\/.*?id=)([A-Za-z0-9]+)/g;
     var IJCAIPattern = /(?<=ijcai\.org\/proceedings\/)(\d+)\/(\d+)/g;
@@ -42,42 +42,42 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
             if (paperIds) {
 				paperIds = paperIds[0].match(arxiv_number);
                 var newUrl = `https://papers.cool/arxiv/${paperIds.join(',')}`;
-                chrome.tabs.create({url: newUrl});
+                chrome.tabs.update(tab.id, {url: newUrl});
                 return;
             }
 			var paperIds = text.match(papersCoolPattern);
             if (paperIds) {
 				paperIds = paperIds[0].match(arxiv_number);
                 var newUrl = `https://arxiv.org/pdf/${paperIds.join(',')}`;
-                chrome.tabs.create({url: newUrl});
+                chrome.tabs.update(tab.id, {url: newUrl});
                 return;
             }
             var paperIds = text.match(OpenReviewPattern);
             if (paperIds) {
                 paperIds = paperIds.map(e => e + '@OpenReview')
                 var newUrl = `https://papers.cool/venue/${paperIds.join(',')}`;
-                chrome.tabs.create({url: newUrl});
+                chrome.tabs.update({url: newUrl});
                 return;
             }
             var paperIds = text.match(IJCAIPattern);
             if (paperIds) {
                 paperIds = paperIds.map(e => e.split('/')[1].replace(/^0+/, '') + '@' + e.split('/')[0] + '@IJCAI')
                 var newUrl = `https://papers.cool/venue/${paperIds.join(',')}`;
-                chrome.tabs.create({url: newUrl});
+                chrome.tabs.update(tab.id, {url: newUrl});
                 return;
             }
             var paperIds = text.match(ACLPattern);
             if (paperIds) {
                 paperIds = paperIds.map(e => e + '@ACL')
                 var newUrl = `https://papers.cool/venue/${paperIds.join(',')}`;
-                chrome.tabs.create({url: newUrl});
+                chrome.tabs.update(tab.id, {url: newUrl});
                 return;
             }
             var paperIds = text.match(PMLRPattern);
             if (paperIds) {
                 paperIds = paperIds.map(e => e.split('/')[1] + '@' + e.split('/')[0] + '@PMLR')
                 var newUrl = `https://papers.cool/venue/${paperIds.join(',')}`;
-                chrome.tabs.create({url: newUrl});
+                chrome.tabs.update(tab.id, {url: newUrl});
                 return;
             }
         }
@@ -85,7 +85,7 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
     keywords = info.selectionText.match(/[\p{L}\p{N}]{2,}/gu);
     if (keywords) {
         var newUrl = `https://papers.cool/arxiv/search?highlight=1&query=${keywords.join(' ')}`;
-        chrome.tabs.create({url: newUrl});
+        chrome.tabs.update(tab.id, {url: newUrl});
         chrome.notifications.create('', {
             type: 'basic',
             iconUrl: 'icon.png',
